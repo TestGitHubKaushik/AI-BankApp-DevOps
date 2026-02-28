@@ -1,0 +1,5 @@
+docker run -d -p 8080:8080 --network=bank-nw -e MYSQL_ROOT_PASSWORD=Test@123 -e MYSQL_HOST=mysql -e MYSQL_PORT=3306 -e MYSQL_DATABASE=bankappdb bankapp
+
+
+ docker run -d -p 3306:3306 --network=bank-nw --name mysql -e MYSQL_ROOT_PASSWORD=Test@123 -e MYSQL_DATABASE=bankappdb mysql:8.0
+
