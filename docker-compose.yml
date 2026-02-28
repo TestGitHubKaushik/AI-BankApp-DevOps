@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+    mysql:
+      image: mysql:8.0
+      container_name: mysql
+      environment:
+        MYSQL_ROOT_PASSWORD: Test@123
+        MYSQL_DATABASE: bankappdb
+      ports:
+        - "3306:3306"
+      networks:
+        - bank-nw
+      healthcheck:
+        test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -pTest@123 || exit 1"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+        start_period: 30s
+
+    bankapp:
+      build: .
+      container_name: bankapp
+      environment:
+        MYSQL_HOST: mysql
+        MYSQL_ROOT_PASSWORD: Test@123
+        MYSQL_DATABASE: bankappdb
+      ports:
+        - "8080:8080"
+      networks:
+        - bank-nw
+      depends_on:
+         mysql:
+            condition: service_healthy
+
+networks:
+  bank-nw:
